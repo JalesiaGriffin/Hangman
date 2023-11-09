@@ -48,7 +48,7 @@ public class Main {
             " +---+\n" +
                     " |   |\n" +
                     " O   |\n" +
-                    "/|\\  |\n" + //if you were wondering, the only way to print '\' is with a trailing escape character, which also happens to be '\'
+                    "/|\\  |\n" +
                     "     |\n" +
                     "     |\n" +
                     " =========\n",
@@ -74,20 +74,20 @@ public class Main {
         // instantiate scanner
         Scanner scan = new Scanner(System.in);
 
-        // Select word
-        int random = (int)(Math.random() * (words.length - 1));
-        String word = words[random];
+        // get word/placeholders
+        String word = randomWord();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
             sb.append("_");
         }
         String placeholders = sb.toString();
 
-        // Print board
+        //**GAME START**//
         boolean running = true;
         int gallow = 0;
         String misses = "";
 
+        // print board
         while(running){
             System.out.println("\n" + gallows[gallow]);
             System.out.println("Word: " + placeholders);
@@ -95,6 +95,7 @@ public class Main {
             System.out.print("Guess: ");
             char guess = scan.next().charAt(0);
 
+            // check if guess is correct
             boolean match = false;
             for (int i = 0; i < word.length(); i++) {
                 if (guess == word.charAt(i)){
@@ -102,6 +103,8 @@ public class Main {
                     match = true;
                 }
             }
+
+            //update game and check for win/loss
             if (!match){
                 gallow++;
                 misses += guess;
@@ -115,5 +118,11 @@ public class Main {
                 System.out.println("You lose :(");
             }
         }
+    }
+
+    public static String randomWord(){
+        int random = (int)(Math.random() * (words.length - 1));
+        String word = words[random];
+        return word;
     }
 }
