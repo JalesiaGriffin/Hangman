@@ -1,5 +1,7 @@
 package learn.the.part;
 
+import java.util.Scanner;
+
 public class Main {
     public static String[] words = {"ant", "baboon", "badger", "bat", "bear", "beaver", "camel",
             "cat", "clam", "cobra", "cougar", "coyote", "crow", "deer",
@@ -69,6 +71,9 @@ public class Main {
     };
 
     public static void main(String[] args) {
+        // instantiate scanner
+        Scanner scan = new Scanner(System.in);
+
         // Select word
         int random = (int)(Math.random() * (words.length - 1));
         String word = words[random];
@@ -79,9 +84,36 @@ public class Main {
         String placeholders = sb.toString();
 
         // Print board
-        System.out.println(gallows[0]);
-        System.out.println("Word: " + placeholders);
-        System.out.println("Misses: ");
-        System.out.println("Guess: ");
+        boolean running = true;
+        int gallow = 0;
+        String misses = "";
+
+        while(running){
+            System.out.println("\n" + gallows[gallow]);
+            System.out.println("Word: " + placeholders);
+            System.out.println("Misses: " + misses);
+            System.out.print("Guess: ");
+            char guess = scan.next().charAt(0);
+
+            boolean match = false;
+            for (int i = 0; i < word.length(); i++) {
+                if (guess == word.charAt(i)){
+                    placeholders = placeholders.substring(0, i) + guess + placeholders.substring(i + 1);
+                    match = true;
+                }
+            }
+            if (!match){
+                gallow++;
+                misses += guess;
+            } else if (placeholders.equalsIgnoreCase(word)) {
+                running = false;
+                System.out.println("\nThe word was \"" + word + "\"");
+                System.out.println("You won :)");
+            } else if (gallow == 5){
+                running = false;
+                System.out.println("\nThe word was \"" + word + "\"");
+                System.out.println("You lose :(");
+            }
+        }
     }
 }
